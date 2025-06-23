@@ -12,6 +12,15 @@ namespace PortfolioManager.Api.Persistence
             
         }
 
+        public DbSet<UserDetails> UserDetails { get; set; }
+        public DbSet<ProjectTab> ProjectTabs { get; set; }
+        public DbSet<UserProjects> UserProjects { get; set; }
+        public DbSet<UserTechStacks> UserTechStacks { get; set; }
+        public DbSet<ExperienceTab> ExperienceTabs { get; set; }
+        public DbSet<UserExperience> UserExperiences { get; set; }
+        public DbSet<EducationTab> EducationTabs { get; set; }
+        public DbSet<UserEducation> UserEducations { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -26,14 +35,24 @@ namespace PortfolioManager.Api.Persistence
                 .HasForeignKey<UserDetails>(ud => ud.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            //<Project Tab> model builder
+            builder.Entity<ProjectTab>()
+                .HasKey(ud => ud.Recid);
+
+            builder.Entity<ProjectTab>()
+                .HasOne(ud => ud.User)
+                .WithOne()
+                .HasForeignKey<ProjectTab>(ud => ud.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             //<UserProjects> model builder
             builder.Entity<UserProjects>()
                 .HasKey(up => up.Recid);
 
             builder.Entity<UserProjects>()
-                .HasOne(up => up.User)
+                .HasOne(up => up.ProjectTab)
                 .WithMany()
-                .HasForeignKey(up => up.UserId)
+                .HasForeignKey(up => up.ProjectTabId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             //<UserTechStacks> model builder

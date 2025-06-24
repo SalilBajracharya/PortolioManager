@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using FluentResults.Extensions.AspNetCore;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
+using PortfolioManager.Api.DTOs.Auth;
+using PortfolioManager.Api.Services.Auth;
 
 namespace PortfolioManager.Api.Controllers
 {
@@ -7,10 +10,17 @@ namespace PortfolioManager.Api.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        [HttpGet("[action]")]
-        public async Task<IActionResult> Test()
+        private readonly IAuthService _authService;
+        public AuthController(IAuthService authService)
         {
-            return Ok("API is working");
+            _authService = authService;
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Login(LoginRequestDto request)
+        {
+            var result = await _authService.Login(request);
+            return result.ToActionResult();
         }
     }
 }

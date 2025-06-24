@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PortfolioManager.Api.DTOs.User;
 using PortfolioManager.Api.Services.User;
+using System.Runtime.CompilerServices;
 
 namespace PortfolioManager.Api.Controllers
 {
